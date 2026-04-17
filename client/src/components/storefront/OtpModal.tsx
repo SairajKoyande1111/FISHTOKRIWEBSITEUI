@@ -7,9 +7,12 @@ import otpAnimation from "@assets/animation-original_1776421716629.json";
 import successAnimation from "@assets/animation-original_(1)_1776422004368.json";
 import flagImg from "@assets/flag_(1)_1776403319572.png";
 import { FishTokriLogo } from "@/components/storefront/FishTokriLogo";
-import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { motion, AnimatePresence } from "framer-motion";
+
+const BRAND_BLUE = "#364F9F";
+const BRAND_RED = "#F05B4E";
 
 interface OtpModalProps {
   open: boolean;
@@ -120,9 +123,7 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
       if (!res.ok) throw new Error(data.message || "Invalid OTP");
       refetch();
       setShowSuccess(true);
-      setTimeout(() => {
-        onClose();
-      }, 2200);
+      setTimeout(() => onClose(), 2500);
     } catch (err: any) {
       toast({ title: err.message, variant: "destructive" });
     } finally {
@@ -130,14 +131,14 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
     }
   };
 
-  const digitCount = phone.length;
-  const isFull = digitCount === 10;
+  const isFull = phone.length === 10;
 
   return (
     <Sheet open={open} onOpenChange={(o) => !o && onClose()}>
       <SheetContent
         side="right"
-        className="w-full sm:max-w-[420px] p-0 overflow-y-auto border-0 shadow-2xl bg-white flex flex-col"
+        className="w-full sm:max-w-[420px] p-0 overflow-y-auto border-0 shadow-2xl flex flex-col"
+        style={{ background: "#0f1117" }}
         data-testid="auth-sheet"
         aria-describedby={undefined}
       >
@@ -145,52 +146,67 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
           <SheetTitle>Login to FishTokri</SheetTitle>
         </VisuallyHidden>
 
+        {/* Decorative top gradient bar */}
+        <div
+          className="h-1.5 w-full shrink-0"
+          style={{ background: `linear-gradient(90deg, ${BRAND_RED} 0%, ${BRAND_BLUE} 100%)` }}
+        />
+
         {/* Success Overlay */}
         <AnimatePresence>
           {showSuccess && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="absolute inset-0 z-50 bg-white flex flex-col items-center justify-center"
+              className="absolute inset-0 z-50 flex items-center justify-center"
+              style={{ background: "#0f1117" }}
             >
-              <div className="w-56 h-56">
+              <div className="w-72 h-72">
                 <Lottie animationData={successAnimation} loop={false} autoplay />
               </div>
-              <p className="text-xl font-bold text-slate-800 mt-2">Welcome to FishTokri!</p>
-              <p className="text-sm text-slate-400 mt-1">Fresh seafood & meat at your doorstep 🐟</p>
             </motion.div>
           )}
         </AnimatePresence>
 
-        <div className="flex flex-col flex-1 px-7 pt-10 pb-8">
+        <div className="flex flex-col flex-1 px-7 pt-8 pb-8">
           {/* Logo */}
-          <div className="flex flex-col items-center mb-6">
-            <FishTokriLogo className="h-16 w-auto mb-1" />
-            <div className="w-24 h-24">
+          <div className="flex flex-col items-center mb-7">
+            <FishTokriLogo className="h-16 w-auto mb-3" />
+
+            {/* Fish animation — same size as OTP animation */}
+            <div className="w-28 h-28">
               <Lottie animationData={fishAnimation} loop autoplay />
             </div>
-            <h2 className="text-[22px] font-bold text-slate-800 text-center leading-snug mt-1">
+
+            <h2 className="text-[21px] font-bold text-center leading-snug mt-2" style={{ color: "#ffffff" }}>
               Welcome!{" "}
-              <span style={{ color: "#364F9F" }}>Fresh seafood & meat</span>
-              <br />at your doorstep
+              <span style={{ background: `linear-gradient(90deg, ${BRAND_RED}, ${BRAND_BLUE})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                Fresh seafood & meat
+              </span>
+              <br />
+              <span style={{ color: "#ffffff" }}>at your doorstep</span>
             </h2>
-            <p className="text-sm text-slate-400 mt-2 text-center">
+            <p className="text-sm mt-2 text-center" style={{ color: "#6b7280" }}>
               Enter your mobile number to continue
             </p>
           </div>
 
-          {/* Phone Input — no card, open style */}
+          {/* Phone Input */}
           <div className="mb-6">
-            <div className="flex items-center gap-3 pb-3 border-b-2 transition-all duration-200"
-              style={{ borderColor: focused ? "#364F9F" : isFull ? "#364F9F66" : "#e2e8f0" }}
+            <div
+              className="flex items-center gap-3 px-4 py-3.5 rounded-2xl border-2 transition-all duration-200"
+              style={{
+                borderColor: focused ? BRAND_BLUE : isFull ? `${BRAND_BLUE}66` : "#2a2d38",
+                background: "#1a1d27",
+              }}
             >
               {/* Flag + code */}
-              <div className="flex items-center gap-1.5 shrink-0 pr-3 border-r border-slate-200">
+              <div className="flex items-center gap-1.5 shrink-0 pr-3 border-r border-white/10">
                 <img src={flagImg} alt="India" className="w-6 h-6 rounded-full object-cover" />
-                <span className="text-base font-bold text-slate-700">+91</span>
+                <span className="text-base font-bold" style={{ color: "#e5e7eb" }}>+91</span>
               </div>
 
-              {/* Input */}
+              {/* Number input */}
               <input
                 ref={phoneRef}
                 type="tel"
@@ -201,29 +217,17 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
                 onBlur={() => setFocused(false)}
                 placeholder="0000000000"
                 disabled={otpSent}
-                className="flex-1 bg-transparent outline-none text-3xl font-bold tracking-[0.12em] text-slate-800 placeholder:text-slate-300 placeholder:font-light placeholder:text-2xl disabled:opacity-60 w-full"
+                className="flex-1 bg-transparent outline-none text-2xl font-bold tracking-[0.15em] placeholder:font-light placeholder:text-xl placeholder:tracking-normal disabled:opacity-50 w-full"
+                style={{
+                  color: "#ffffff",
+                  caretColor: BRAND_BLUE,
+                }}
                 data-testid="input-phone"
-                style={{ caretColor: "#364F9F" }}
               />
-            </div>
-
-            {/* Digit progress dots — 10 fixed dots */}
-            <div className="flex gap-[5px] mt-2 pl-[72px]">
-              {Array.from({ length: 10 }).map((_, i) => (
-                <motion.div
-                  key={i}
-                  animate={{
-                    backgroundColor: i < digitCount ? "#364F9F" : "#e2e8f0",
-                    scaleX: i === digitCount - 1 ? [1, 1.5, 1] : 1,
-                  }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                  className="flex-1 h-[3px] rounded-full"
-                />
-              ))}
             </div>
           </div>
 
-          {/* Get OTP button */}
+          {/* Login button */}
           <AnimatePresence>
             {!otpSent && (
               <motion.div
@@ -234,8 +238,8 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
                 <button
                   onClick={handlePhoneSubmit}
                   disabled={loading || !isFull}
-                  className="w-full py-4 rounded-2xl font-bold text-white text-base transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98]"
-                  style={{ background: "linear-gradient(135deg, #364F9F 0%, #2a3d80 100%)" }}
+                  className="w-full py-4 rounded-full font-bold text-white text-base transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98]"
+                  style={{ background: `linear-gradient(135deg, ${BRAND_RED} 0%, ${BRAND_BLUE} 100%)` }}
                   data-testid="button-send-otp"
                 >
                   {loading ? (
@@ -246,14 +250,14 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
                       </svg>
                       Sending OTP...
                     </span>
-                  ) : "Get My OTP →"}
+                  ) : "Login"}
                 </button>
 
-                <p className="text-[11px] text-center text-slate-400 mt-3">
+                <p className="text-[11px] text-center mt-3" style={{ color: "#6b7280" }}>
                   By continuing, you agree to our{" "}
-                  <span className="underline cursor-pointer" style={{ color: "#364F9F" }}>Terms</span>
+                  <span className="underline cursor-pointer" style={{ color: BRAND_BLUE }}>Terms</span>
                   {" & "}
-                  <span className="underline cursor-pointer" style={{ color: "#364F9F" }}>Privacy Policy</span>
+                  <span className="underline cursor-pointer" style={{ color: BRAND_BLUE }}>Privacy Policy</span>
                 </p>
               </motion.div>
             )}
@@ -268,21 +272,23 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.35, ease: "easeOut" }}
               >
-                {/* OTP lottie + header */}
-                <div className="flex flex-col items-center mb-5">
-                  <div className="w-28 h-28 -mt-2">
+                {/* OTP animation — same w-28 h-28 as fish */}
+                <div className="flex flex-col items-center mb-4">
+                  <div className="w-28 h-28">
                     <Lottie animationData={otpAnimation} loop autoplay />
                   </div>
-                  <h3 className="text-lg font-bold text-slate-800 text-center -mt-1">Verify it's you!</h3>
-                  {/* Phone + Change number inline */}
+                  <h3 className="text-lg font-bold text-center" style={{ color: "#ffffff" }}>
+                    Verify it's you!
+                  </h3>
+                  {/* Phone + Change inline */}
                   <div className="flex items-center gap-2 mt-1">
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm" style={{ color: "#9ca3af" }}>
                       Code sent to{" "}
-                      <span className="font-semibold text-slate-700">+91 {phone}</span>
+                      <span className="font-semibold" style={{ color: "#e5e7eb" }}>+91 {phone}</span>
                     </p>
                     <button
-                      className="text-xs font-semibold underline transition-colors"
-                      style={{ color: "#364F9F" }}
+                      className="text-xs font-bold underline"
+                      style={{ color: BRAND_RED }}
                       onClick={() => { setOtpSent(false); setOtp(["", "", "", ""]); }}
                       data-testid="button-back-to-phone"
                     >
@@ -308,22 +314,24 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ delay: i * 0.07, duration: 0.2, ease: "backOut" }}
                       whileFocus={{ scale: 1.08 }}
-                      className="w-[62px] h-[62px] text-center text-2xl font-bold border-2 rounded-2xl outline-none transition-colors"
+                      className="w-[62px] h-[62px] text-center text-2xl font-bold rounded-2xl outline-none transition-all border-2"
                       style={{
-                        borderColor: otp[i] ? "#364F9F" : "#e2e8f0",
-                        background: otp[i] ? "#364F9F0A" : "#f8fafc",
-                        color: "#1e293b",
+                        borderColor: otp[i] ? BRAND_BLUE : "#2a2d38",
+                        background: otp[i] ? `${BRAND_BLUE}18` : "#1a1d27",
+                        color: "#ffffff",
+                        caretColor: BRAND_BLUE,
                       }}
                       data-testid={`input-otp-digit-${i}`}
                     />
                   ))}
                 </div>
 
+                {/* Verify button */}
                 <button
                   onClick={handleOtpSubmit}
                   disabled={loading || otp.join("").length !== 4}
-                  className="w-full py-4 rounded-2xl font-bold text-white text-base transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98]"
-                  style={{ background: "linear-gradient(135deg, #364F9F 0%, #2a3d80 100%)" }}
+                  className="w-full py-4 rounded-full font-bold text-white text-base transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98]"
+                  style={{ background: `linear-gradient(135deg, ${BRAND_RED} 0%, ${BRAND_BLUE} 100%)` }}
                   data-testid="button-verify-otp"
                 >
                   {loading ? (
@@ -334,14 +342,14 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
                       </svg>
                       Verifying...
                     </span>
-                  ) : "Verify & Dive In 🐟"}
+                  ) : "Verify"}
                 </button>
 
-                <p className="text-[11px] text-center text-slate-400 mt-4">
+                <p className="text-[11px] text-center mt-4" style={{ color: "#6b7280" }}>
                   Didn't get it?{" "}
                   <span
                     className="font-semibold cursor-pointer"
-                    style={{ color: "#F05B4E" }}
+                    style={{ color: BRAND_RED }}
                     onClick={handlePhoneSubmit}
                   >
                     Resend OTP
