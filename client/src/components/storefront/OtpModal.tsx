@@ -137,8 +137,7 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
     <Sheet open={open} onOpenChange={(o) => !o && onClose()}>
       <SheetContent
         side="right"
-        className="w-full sm:max-w-[420px] p-0 overflow-y-auto border-0 shadow-2xl flex flex-col"
-        style={{ background: "#0f1117" }}
+        className="w-full sm:max-w-[420px] p-0 overflow-y-auto border-0 shadow-2xl flex flex-col bg-white"
         data-testid="auth-sheet"
         aria-describedby={undefined}
       >
@@ -158,8 +157,7 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="absolute inset-0 z-50 flex items-center justify-center"
-              style={{ background: "#0f1117" }}
+              className="absolute inset-0 z-50 flex items-center justify-center bg-white"
             >
               <div className="w-72 h-72">
                 <Lottie animationData={successAnimation} loop={false} autoplay />
@@ -178,15 +176,12 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
               <Lottie animationData={fishAnimation} loop autoplay />
             </div>
 
-            <h2 className="text-[21px] font-bold text-center leading-snug mt-2" style={{ color: "#ffffff" }}>
+            <h2 className="text-[21px] font-bold text-center leading-snug mt-2 text-slate-800">
               Welcome!{" "}
-              <span style={{ background: `linear-gradient(90deg, ${BRAND_RED}, ${BRAND_BLUE})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                Fresh seafood & meat
-              </span>
-              <br />
-              <span style={{ color: "#ffffff" }}>at your doorstep</span>
+              <span style={{ color: BRAND_BLUE }}>Fresh seafood & meat</span>
+              <br />at your doorstep
             </h2>
-            <p className="text-sm mt-2 text-center" style={{ color: "#6b7280" }}>
+            <p className="text-sm mt-2 text-center text-slate-400">
               Enter your mobile number to continue
             </p>
           </div>
@@ -194,16 +189,15 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
           {/* Phone Input */}
           <div className="mb-6">
             <div
-              className="flex items-center gap-3 px-4 py-3.5 rounded-2xl border-2 transition-all duration-200"
+              className="flex items-center gap-3 px-4 py-3.5 rounded-2xl border-2 transition-all duration-200 bg-slate-50"
               style={{
-                borderColor: focused ? BRAND_BLUE : isFull ? `${BRAND_BLUE}66` : "#2a2d38",
-                background: "#1a1d27",
+                borderColor: focused ? BRAND_BLUE : isFull ? `${BRAND_BLUE}66` : "#e2e8f0",
               }}
             >
               {/* Flag + code */}
-              <div className="flex items-center gap-1.5 shrink-0 pr-3 border-r border-white/10">
+              <div className="flex items-center gap-1.5 shrink-0 pr-3 border-r border-slate-200">
                 <img src={flagImg} alt="India" className="w-6 h-6 rounded-full object-cover" />
-                <span className="text-base font-bold" style={{ color: "#e5e7eb" }}>+91</span>
+                <span className="text-base font-bold text-slate-700">+91</span>
               </div>
 
               {/* Number input */}
@@ -217,11 +211,8 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
                 onBlur={() => setFocused(false)}
                 placeholder="0000000000"
                 disabled={otpSent}
-                className="flex-1 bg-transparent outline-none text-2xl font-bold tracking-[0.15em] placeholder:font-light placeholder:text-xl placeholder:tracking-normal disabled:opacity-50 w-full"
-                style={{
-                  color: "#ffffff",
-                  caretColor: BRAND_BLUE,
-                }}
+                className="flex-1 bg-transparent outline-none text-2xl font-bold tracking-[0.15em] text-slate-800 placeholder:text-slate-300 placeholder:font-light placeholder:text-xl placeholder:tracking-normal disabled:opacity-50 w-full"
+                style={{ caretColor: BRAND_BLUE }}
                 data-testid="input-phone"
               />
             </div>
@@ -253,7 +244,7 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
                   ) : "Login"}
                 </button>
 
-                <p className="text-[11px] text-center mt-3" style={{ color: "#6b7280" }}>
+                <p className="text-[11px] text-center mt-3 text-slate-400">
                   By continuing, you agree to our{" "}
                   <span className="underline cursor-pointer" style={{ color: BRAND_BLUE }}>Terms</span>
                   {" & "}
@@ -277,14 +268,14 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
                   <div className="w-28 h-28">
                     <Lottie animationData={otpAnimation} loop autoplay />
                   </div>
-                  <h3 className="text-lg font-bold text-center" style={{ color: "#ffffff" }}>
+                  <h3 className="text-lg font-bold text-center text-slate-800">
                     Verify it's you!
                   </h3>
                   {/* Phone + Change inline */}
                   <div className="flex items-center gap-2 mt-1">
-                    <p className="text-sm" style={{ color: "#9ca3af" }}>
+                    <p className="text-sm text-slate-500">
                       Code sent to{" "}
-                      <span className="font-semibold" style={{ color: "#e5e7eb" }}>+91 {phone}</span>
+                      <span className="font-semibold text-slate-700">+91 {phone}</span>
                     </p>
                     <button
                       className="text-xs font-bold underline"
@@ -316,9 +307,9 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
                       whileFocus={{ scale: 1.08 }}
                       className="w-[62px] h-[62px] text-center text-2xl font-bold rounded-2xl outline-none transition-all border-2"
                       style={{
-                        borderColor: otp[i] ? BRAND_BLUE : "#2a2d38",
-                        background: otp[i] ? `${BRAND_BLUE}18` : "#1a1d27",
-                        color: "#ffffff",
+                        borderColor: otp[i] ? BRAND_BLUE : "#e2e8f0",
+                        background: otp[i] ? `${BRAND_BLUE}0A` : "#f8fafc",
+                        color: "#1e293b",
                         caretColor: BRAND_BLUE,
                       }}
                       data-testid={`input-otp-digit-${i}`}
@@ -345,7 +336,7 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
                   ) : "Verify"}
                 </button>
 
-                <p className="text-[11px] text-center mt-4" style={{ color: "#6b7280" }}>
+                <p className="text-[11px] text-center mt-4 text-slate-400">
                   Didn't get it?{" "}
                   <span
                     className="font-semibold cursor-pointer"
