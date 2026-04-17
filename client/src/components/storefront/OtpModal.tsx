@@ -215,12 +215,12 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
             <div className="w-28 h-28">
               <Lottie animationData={fishAnimation} loop autoplay />
             </div>
-            <h2 className="text-[21px] font-bold text-center leading-snug mt-2 text-slate-800">
-              Welcome!{" "}
-              <span style={{ color: BRAND_BLUE }}>Fresh seafood & meat</span>
-              <br />at your doorstep
+            <h2 className="text-[21px] font-bold text-center leading-snug mt-2">
+              <span style={{ color: BRAND_RED }}>Welcome!</span>{" "}
+              <span style={{ color: BRAND_BLUE }}>Fresh Seafood & Meat</span>
+              <br /><span className="text-slate-800">at your doorstep</span>
             </h2>
-            <p className="text-sm mt-2 text-center text-slate-400">
+            <p className="text-sm mt-2 text-center font-medium text-slate-800">
               Enter your mobile number to continue
             </p>
           </div>
