@@ -182,38 +182,38 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
 
         {step === "phone" ? (
           <div className="px-6 pt-7 pb-7">
-            {/* Logo + Lottie */}
-            <div className="flex flex-col items-center mb-5">
+            {/* Logo + Lottie + heading */}
+            <div className="flex flex-col items-center mb-6">
               <FishTokriLogo className="h-7 w-auto mb-2" />
-              <div className="w-24 h-24 -my-1">
+              <div className="w-20 h-20">
                 <Lottie animationData={fishAnimation} loop autoplay />
               </div>
-              <h2 className="text-xl font-bold text-slate-800 text-center mt-2">
-                Login / Sign up
+              <h2 className="text-lg font-bold text-slate-800 text-center mt-2 leading-snug">
+                Welcome! <span style={{ color: "#364F9F" }}>Fresh seafood & meat</span>
+                <br />at your doorstep 🐟
               </h2>
-              <p className="text-sm text-slate-500 mt-1 text-center">
+              <p className="text-xs text-slate-400 mt-1 text-center">
                 Enter your mobile number to continue
               </p>
             </div>
 
-            {/* Progress bar */}
-            <div className="flex gap-1 mb-3">
-              {Array(10).fill(0).map((_, i) => (
-                <div
-                  key={i}
-                  className="flex-1 h-1 rounded-full transition-all duration-200"
-                  style={{ background: i < filledCount ? "#364F9F" : "#e2e8f0" }}
-                />
-              ))}
-            </div>
+            {/* Mobile Number label */}
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
+              Mobile Number
+            </p>
 
-            {/* Phone boxes */}
-            <div className="mb-4">
-              <div className="flex items-center gap-1.5 mb-2">
-                <img src={flagImg} alt="India" className="w-5 h-5 rounded-full object-cover shrink-0" />
-                <span className="text-sm font-semibold text-slate-600 shrink-0">+91</span>
+            {/* Flag + +91 + 10 digit boxes — single row */}
+            <div
+              className="flex items-center rounded-2xl border-2 overflow-hidden mb-4 transition-colors"
+              style={{ borderColor: filledCount > 0 ? "#364F9F" : "#e2e8f0" }}
+            >
+              {/* Country code */}
+              <div className="flex items-center gap-1.5 px-3 py-2.5 bg-slate-50 border-r-2 border-slate-200 shrink-0">
+                <img src={flagImg} alt="India" className="w-5 h-5 rounded-full object-cover" />
+                <span className="text-sm font-bold text-slate-700">+91</span>
               </div>
-              <div className="flex gap-1">
+              {/* Individual digit boxes inside one unified container */}
+              <div className="flex flex-1">
                 {phoneRefs.map((ref, i) => (
                   <input
                     key={i}
@@ -225,10 +225,10 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
                     onChange={e => handlePhoneDigit(i, e.target.value)}
                     onKeyDown={e => handlePhoneKeyDown(i, e)}
                     onPaste={handlePhonePaste}
-                    className="flex-1 min-w-0 h-10 text-center text-sm font-bold border-2 rounded-lg outline-none transition-all"
+                    className="flex-1 min-w-0 h-11 text-center text-sm font-bold outline-none transition-all border-r last:border-r-0"
                     style={{
-                      borderColor: phoneDigits[i] ? "#364F9F" : "#e2e8f0",
-                      background: phoneDigits[i] ? "#364F9F0A" : "#f8fafc",
+                      borderColor: "#f1f5f9",
+                      background: phoneDigits[i] ? "#364F9F0A" : "white",
                       color: "#1e293b",
                     }}
                     data-testid={`input-phone-digit-${i}`}
@@ -236,6 +236,17 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
                   />
                 ))}
               </div>
+            </div>
+
+            {/* Progress dots */}
+            <div className="flex gap-1 mb-4">
+              {Array(10).fill(0).map((_, i) => (
+                <div
+                  key={i}
+                  className="flex-1 h-0.5 rounded-full transition-all duration-200"
+                  style={{ background: i < filledCount ? "#364F9F" : "#e2e8f0" }}
+                />
+              ))}
             </div>
 
             <button
