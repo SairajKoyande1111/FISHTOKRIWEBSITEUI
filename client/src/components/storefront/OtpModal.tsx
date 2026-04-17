@@ -19,6 +19,54 @@ interface OtpModalProps {
   onClose: () => void;
 }
 
+function SolidButton({
+  color,
+  onClick,
+  disabled,
+  loading,
+  loadingText,
+  children,
+  testId,
+}: {
+  color: string;
+  onClick: () => void;
+  disabled?: boolean;
+  loading?: boolean;
+  loadingText?: string;
+  children: React.ReactNode;
+  testId?: string;
+}) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onMouseDown={() => setHovered(true)}
+      onMouseUp={() => setHovered(false)}
+      className="w-full py-4 rounded-full font-bold text-base transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98] border-2"
+      style={{
+        background: hovered ? "white" : color,
+        color: hovered ? color : "white",
+        borderColor: color,
+      }}
+      data-testid={testId}
+    >
+      {loading ? (
+        <span className="flex items-center justify-center gap-2">
+          <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+          </svg>
+          {loadingText}
+        </span>
+      ) : children}
+    </button>
+  );
+}
+
 export function OtpModal({ open, onClose }: OtpModalProps) {
   const [phone, setPhone] = useState("");
   const [otpSent, setOtpSent] = useState(false);
@@ -145,12 +193,6 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
           <SheetTitle>Login to FishTokri</SheetTitle>
         </VisuallyHidden>
 
-        {/* Decorative top gradient bar */}
-        <div
-          className="h-1.5 w-full shrink-0"
-          style={{ background: `linear-gradient(90deg, ${BRAND_RED} 0%, ${BRAND_BLUE} 100%)` }}
-        />
-
         {/* Success Overlay */}
         <AnimatePresence>
           {showSuccess && (
@@ -166,16 +208,13 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
           )}
         </AnimatePresence>
 
-        <div className="flex flex-col flex-1 px-7 pt-8 pb-8">
-          {/* Logo */}
+        <div className="flex flex-col flex-1 px-7 pt-10 pb-8">
+          {/* Logo + Hero */}
           <div className="flex flex-col items-center mb-7">
             <FishTokriLogo className="h-16 w-auto mb-3" />
-
-            {/* Fish animation — same size as OTP animation */}
             <div className="w-28 h-28">
               <Lottie animationData={fishAnimation} loop autoplay />
             </div>
-
             <h2 className="text-[21px] font-bold text-center leading-snug mt-2 text-slate-800">
               Welcome!{" "}
               <span style={{ color: BRAND_BLUE }}>Fresh seafood & meat</span>
@@ -186,21 +225,16 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
             </p>
           </div>
 
-          {/* Phone Input */}
+          {/* Phone Input — underline style, no card */}
           <div className="mb-6">
             <div
-              className="flex items-center gap-3 px-4 py-3.5 rounded-2xl border-2 transition-all duration-200 bg-slate-50"
-              style={{
-                borderColor: focused ? BRAND_BLUE : isFull ? `${BRAND_BLUE}66` : "#e2e8f0",
-              }}
+              className="flex items-center gap-3 pb-3 border-b-2 transition-all duration-200"
+              style={{ borderColor: focused ? BRAND_RED : isFull ? `${BRAND_BLUE}88` : "#e2e8f0" }}
             >
-              {/* Flag + code */}
               <div className="flex items-center gap-1.5 shrink-0 pr-3 border-r border-slate-200">
                 <img src={flagImg} alt="India" className="w-6 h-6 rounded-full object-cover" />
                 <span className="text-base font-bold text-slate-700">+91</span>
               </div>
-
-              {/* Number input */}
               <input
                 ref={phoneRef}
                 type="tel"
@@ -212,13 +246,13 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
                 placeholder="0000000000"
                 disabled={otpSent}
                 className="flex-1 bg-transparent outline-none text-2xl font-bold tracking-[0.15em] text-slate-800 placeholder:text-slate-300 placeholder:font-light placeholder:text-xl placeholder:tracking-normal disabled:opacity-50 w-full"
-                style={{ caretColor: BRAND_BLUE }}
+                style={{ caretColor: BRAND_RED }}
                 data-testid="input-phone"
               />
             </div>
           </div>
 
-          {/* Login button */}
+          {/* Login button — red */}
           <AnimatePresence>
             {!otpSent && (
               <motion.div
@@ -226,23 +260,16 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
               >
-                <button
+                <SolidButton
+                  color={BRAND_RED}
                   onClick={handlePhoneSubmit}
                   disabled={loading || !isFull}
-                  className="w-full py-4 rounded-full font-bold text-white text-base transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98]"
-                  style={{ background: `linear-gradient(135deg, ${BRAND_RED} 0%, ${BRAND_BLUE} 100%)` }}
-                  data-testid="button-send-otp"
+                  loading={loading}
+                  loadingText="Sending OTP..."
+                  testId="button-send-otp"
                 >
-                  {loading ? (
-                    <span className="flex items-center justify-center gap-2">
-                      <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="white" strokeWidth="4" />
-                        <path className="opacity-75" fill="white" d="M4 12a8 8 0 018-8v8z" />
-                      </svg>
-                      Sending OTP...
-                    </span>
-                  ) : "Login"}
-                </button>
+                  Login
+                </SolidButton>
 
                 <p className="text-[11px] text-center mt-3 text-slate-400">
                   By continuing, you agree to our{" "}
@@ -254,7 +281,7 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
             )}
           </AnimatePresence>
 
-          {/* OTP Section — slides in below */}
+          {/* OTP Section */}
           <AnimatePresence>
             {otpSent && (
               <motion.div
@@ -263,15 +290,11 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.35, ease: "easeOut" }}
               >
-                {/* OTP animation — same w-28 h-28 as fish */}
                 <div className="flex flex-col items-center mb-4">
                   <div className="w-28 h-28">
                     <Lottie animationData={otpAnimation} loop autoplay />
                   </div>
-                  <h3 className="text-lg font-bold text-center text-slate-800">
-                    Verify it's you!
-                  </h3>
-                  {/* Phone + Change inline */}
+                  <h3 className="text-lg font-bold text-center text-slate-800">Verify it's you!</h3>
                   <div className="flex items-center gap-2 mt-1">
                     <p className="text-sm text-slate-500">
                       Code sent to{" "}
@@ -317,24 +340,17 @@ export function OtpModal({ open, onClose }: OtpModalProps) {
                   ))}
                 </div>
 
-                {/* Verify button */}
-                <button
+                {/* Verify button — blue */}
+                <SolidButton
+                  color={BRAND_BLUE}
                   onClick={handleOtpSubmit}
                   disabled={loading || otp.join("").length !== 4}
-                  className="w-full py-4 rounded-full font-bold text-white text-base transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98]"
-                  style={{ background: `linear-gradient(135deg, ${BRAND_RED} 0%, ${BRAND_BLUE} 100%)` }}
-                  data-testid="button-verify-otp"
+                  loading={loading}
+                  loadingText="Verifying..."
+                  testId="button-verify-otp"
                 >
-                  {loading ? (
-                    <span className="flex items-center justify-center gap-2">
-                      <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="white" strokeWidth="4" />
-                        <path className="opacity-75" fill="white" d="M4 12a8 8 0 018-8v8z" />
-                      </svg>
-                      Verifying...
-                    </span>
-                  ) : "Verify"}
-                </button>
+                  Verify
+                </SolidButton>
 
                 <p className="text-[11px] text-center mt-4 text-slate-400">
                   Didn't get it?{" "}
