@@ -677,16 +677,23 @@ export function CartDrawer() {
                           <>
                             {/* Applied coupon banner */}
                             {appliedCoupon && (
-                              <div className="flex items-center justify-between px-4 py-3 bg-emerald-600 border-t border-emerald-700">
-                                <div className="flex items-center gap-2 min-w-0">
-                                  <button
-                                    onClick={removeCoupon}
-                                    className="w-6 h-6 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center shrink-0 transition-colors"
-                                    aria-label="Remove coupon"
-                                    data-testid="button-remove-coupon"
-                                  >
-                                    <img src={iconBinImg} alt="" className="w-3 h-3 object-contain" style={{ filter: "brightness(0) invert(1)" }} />
-                                  </button>
+                              <div className="flex items-center justify-between px-4 py-3 bg-emerald-500 border-t border-emerald-400">
+                                <div className="flex items-center gap-2.5 min-w-0">
+                                  <span
+                                    aria-hidden
+                                    className="w-5 h-5 shrink-0 inline-block"
+                                    style={{
+                                      backgroundColor: "#ffffff",
+                                      WebkitMaskImage: `url(${tagIconImg})`,
+                                      maskImage: `url(${tagIconImg})`,
+                                      WebkitMaskRepeat: "no-repeat",
+                                      maskRepeat: "no-repeat",
+                                      WebkitMaskSize: "contain",
+                                      maskSize: "contain",
+                                      WebkitMaskPosition: "center",
+                                      maskPosition: "center",
+                                    }}
+                                  />
                                   <div className="min-w-0">
                                     <span className="font-mono font-bold text-sm text-white tracking-wider">{appliedCoupon.code}</span>
                                     <p className="text-xs text-white/90">
@@ -694,6 +701,14 @@ export function CartDrawer() {
                                     </p>
                                   </div>
                                 </div>
+                                <button
+                                  onClick={removeCoupon}
+                                  className="w-7 h-7 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center shrink-0 transition-colors ml-3"
+                                  aria-label="Remove coupon"
+                                  data-testid="button-remove-coupon"
+                                >
+                                  <img src={iconBinImg} alt="" className="w-3.5 h-3.5 object-contain" style={{ filter: "brightness(0) invert(1)" }} />
+                                </button>
                               </div>
                             )}
 
@@ -791,7 +806,7 @@ export function CartDrawer() {
                                           disabled={!applicable || isApplied || isApplyingCoupon || exhausted}
                                           className={`ml-3 shrink-0 text-xs font-bold px-3.5 py-1.5 rounded-full transition-colors flex items-center gap-1 ${
                                             isApplied
-                                              ? "bg-emerald-100 text-emerald-700 cursor-default"
+                                              ? "bg-emerald-500 text-white cursor-default"
                                               : exhausted
                                                 ? "bg-red-50 text-red-400 cursor-not-allowed"
                                                 : applicable
@@ -801,7 +816,7 @@ export function CartDrawer() {
                                           style={applicable && !isApplied && !exhausted ? { backgroundColor: "#364F9F" } : undefined}
                                         >
                                           {isThisApplying ? <Loader2 className="w-3 h-3 animate-spin" /> : null}
-                                          {isApplied ? "✓ Applied" : exhausted ? "Limit reached" : applicable ? "Apply" : "Locked"}
+                                          {isApplied ? "Applied" : exhausted ? "Limit reached" : applicable ? "Apply" : "Locked"}
                                         </button>
                                       );
                                     })()}
