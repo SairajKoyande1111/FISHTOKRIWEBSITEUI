@@ -496,13 +496,13 @@ export function CartDrawer() {
   return (
     <>
       <Sheet open={isCartOpen} onOpenChange={handleClose}>
-        <SheetContent className="w-full sm:max-w-md flex flex-col h-full bg-white border-l border-border/30 p-0 overflow-hidden font-sans">
+        <SheetContent className={`w-full sm:max-w-md flex flex-col h-full bg-white border-l border-border/30 p-0 overflow-hidden font-sans ${isSuccess ? "[&>button]:hidden" : ""}`}>
           {isSuccess ? (
             <div className="relative flex flex-col items-center justify-start h-full p-6 text-center overflow-hidden">
               <div className="pointer-events-none absolute inset-0 z-0">
                 <Lottie animationData={confettiAnim} loop autoplay style={{ width: "100%", height: "100%" }} />
               </div>
-              <div className="relative z-10 mt-12 mb-10">
+              <div className="relative z-10 mt-4 mb-8">
                 <FishTokriLogo className="h-16 w-auto" />
               </div>
               <div className="relative z-10 w-40 h-40 -mb-2">
