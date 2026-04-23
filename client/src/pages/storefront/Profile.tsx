@@ -24,6 +24,10 @@ import iconHomeImg from "@assets/home_1776927604826.png";
 import iconEditImg from "@assets/edit_1776927607777.png";
 import iconBinImg from "@assets/bin_1776927610776.png";
 import orderIconImg from "@/assets/order-icon.png";
+import trackPlacedImg from "@/assets/track-placed.png";
+import trackConfirmedImg from "@/assets/track-confirmed.png";
+import trackDeliveryImg from "@/assets/track-delivery.png";
+import trackDeliveredImg from "@/assets/track-delivered.png";
 import iconBriefcaseImg from "@assets/briefcase_1776927648499.png";
 import headerUserImg from "@assets/user_(1)_1774707188827.png";
 import headerCartImg from "@assets/shopping-bag_1774706595493.png";
@@ -112,11 +116,12 @@ function getOrderTotal(order: OrderRequest) {
 }
 
 const TRACK_STEPS = [
-  { status: "pending",          label: "Order Placed",      desc: "We've received your order",       icon: ShoppingBag },
-  { status: "confirmed",        label: "Confirmed",          desc: "Store confirmed your order",       icon: CheckCircle2 },
-  { status: "out_for_delivery", label: "Out for Delivery",  desc: "Your order is on the way",         icon: Truck },
-  { status: "delivered",        label: "Delivered",          desc: "Order delivered successfully",     icon: PackageCheck },
+  { status: "pending",          label: "Order Placed",      desc: "We've received your order",       img: trackPlacedImg },
+  { status: "confirmed",        label: "Confirmed",          desc: "Store confirmed your order",       img: trackConfirmedImg },
+  { status: "out_for_delivery", label: "Out for Delivery",  desc: "Your order is on the way",         img: trackDeliveryImg },
+  { status: "delivered",        label: "Delivered",          desc: "Order delivered successfully",     img: trackDeliveredImg },
 ];
+const BRAND_RED_FILTER = "brightness(0) saturate(100%) invert(45%) sepia(89%) saturate(1620%) hue-rotate(331deg) brightness(99%) contrast(89%)";
 const TRACK_STATUS_ORDER = ["pending", "confirmed", "out_for_delivery", "delivered"];
 
 function TrackOrderModal({ order, onClose }: { order: OrderRequest; onClose: () => void }) {
@@ -161,28 +166,26 @@ function TrackOrderModal({ order, onClose }: { order: OrderRequest; onClose: () 
           ) : (
             <div className="space-y-0">
               {TRACK_STEPS.map((step, idx) => {
-                const StepIcon = step.icon;
                 const isDone = idx < currentIdx;
                 const isCurrent = idx === currentIdx;
-                const isUpcoming = idx > currentIdx;
                 const isLast = idx === TRACK_STEPS.length - 1;
 
                 return (
                   <div key={step.status} className="flex gap-4">
                     {/* Icon column */}
                     <div className="flex flex-col items-center">
-                      <div className={`relative w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all ${
-                        isDone    ? "bg-primary text-white" :
-                        isCurrent ? "bg-primary/10 text-primary ring-2 ring-primary/30" :
-                                    "bg-slate-100 text-slate-300"
-                      }`}>
-                        {isDone ? (
-                          <CheckCircle2 className="w-5 h-5" />
-                        ) : (
-                          <StepIcon className={`w-5 h-5 ${isCurrent ? "animate-pulse" : ""}`} />
-                        )}
+                      <div className="relative w-10 h-10 flex items-center justify-center shrink-0">
+                        <img
+                          src={step.img}
+                          alt=""
+                          className={`w-7 h-7 object-contain transition-all ${isCurrent ? "animate-pulse" : ""} ${isDone || isCurrent ? "" : "opacity-30"}`}
+                          style={{ filter: isDone || isCurrent ? BRAND_RED_FILTER : "grayscale(100%)" }}
+                        />
                         {isCurrent && (
-                          <span className="absolute inset-0 rounded-full ring-4 ring-primary/20 animate-ping" />
+                          <>
+                            <span className="absolute inset-0 rounded-full ring-2 ring-primary/40" />
+                            <span className="absolute inset-0 rounded-full ring-4 ring-primary/20 animate-ping" />
+                          </>
                         )}
                       </div>
                       {!isLast && (
@@ -289,22 +292,27 @@ function OrderCard({ order, productImageMap }: { order: OrderRequest; productIma
         <div className="px-4 pb-4">
           <div className="flex items-start justify-between gap-1">
             {TRACK_STEPS.map((step, idx) => {
-              const StepIcon = step.icon;
               const isDone = idx < currentStepIdx;
               const isCurrent = idx === currentStepIdx;
               const isLast = idx === TRACK_STEPS.length - 1;
               return (
                 <div key={step.status} className="flex-1 flex flex-col items-center relative">
                   {!isLast && (
-                    <div className={`absolute top-4 left-1/2 w-full h-0.5 ${isDone ? "bg-primary" : "bg-slate-200"}`} />
+                    <div className={`absolute top-5 left-1/2 w-full h-0.5 ${isDone ? "bg-primary" : "bg-slate-200"}`} />
                   )}
-                  <div className={`relative z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-                    isDone    ? "bg-primary text-white" :
-                    isCurrent ? "bg-primary/10 text-primary ring-2 ring-primary/30" :
-                                "bg-slate-100 text-slate-300"
-                  }`}>
-                    {isDone ? <CheckCircle2 className="w-4 h-4" /> : <StepIcon className={`w-4 h-4 ${isCurrent ? "animate-pulse" : ""}`} />}
-                    {isCurrent && <span className="absolute inset-0 rounded-full ring-4 ring-primary/20 animate-ping" />}
+                  <div className="relative z-10 w-10 h-10 flex items-center justify-center">
+                    <img
+                      src={step.img}
+                      alt=""
+                      className={`w-7 h-7 object-contain transition-all ${isCurrent ? "animate-pulse" : ""} ${isDone || isCurrent ? "" : "opacity-30"}`}
+                      style={{ filter: isDone || isCurrent ? BRAND_RED_FILTER : "grayscale(100%)" }}
+                    />
+                    {isCurrent && (
+                      <>
+                        <span className="absolute inset-0 rounded-full ring-2 ring-primary/40" />
+                        <span className="absolute inset-0 rounded-full ring-4 ring-primary/20 animate-ping" />
+                      </>
+                    )}
                   </div>
                   <p className={`mt-1.5 text-[10px] font-medium text-center leading-tight ${
                     isDone ? "text-primary" : isCurrent ? "text-foreground" : "text-slate-400"
