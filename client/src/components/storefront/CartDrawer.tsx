@@ -8,6 +8,8 @@ import {
   Clock, Zap, Ticket, ChevronDown, ChevronUp
 } from "lucide-react";
 import popperAnim from "@/assets/lottie/popper.json";
+import emptyAddressAnim from "@/assets/lottie/empty-address.json";
+import iconWalletImg from "@assets/wallet_1776953301704.png";
 import headerCartImg from "@assets/shopping-bag_1774706595493.png";
 import iconBinImg from "@assets/bin_1776927610776.png";
 import iconHomeTypeImg from "@assets/home_1776927604826.png";
@@ -1092,8 +1094,8 @@ export function CartDrawer() {
                           <p className="text-xs mt-1 opacity-70">Tap to sign in with your phone</p>
                         </button>
                       ) : savedAddresses.length === 0 ? (
-                        <button onClick={openAddForm} className="w-full border-2 border-dashed border-border/50 rounded-2xl p-4 text-center text-muted-foreground hover:border-primary/40 hover:text-primary transition-colors" data-testid="button-add-first-address">
-                          <MapPin className="w-6 h-6 mx-auto mb-1 opacity-40" />
+                        <button onClick={openAddForm} className="w-full border-2 border-dashed border-border/50 rounded-2xl p-4 flex flex-col items-center text-center text-muted-foreground hover:border-primary/40 hover:text-primary transition-colors" data-testid="button-add-first-address">
+                          <Lottie animationData={emptyAddressAnim} loop className="w-16 h-16" />
                           <p className="text-sm font-medium">+ Add delivery address</p>
                         </button>
                       ) : (
@@ -1199,11 +1201,28 @@ export function CartDrawer() {
 
                     {/* Payment Method */}
                     <div className="px-4 mt-5 mb-4 space-y-3">
-                      <h3 className="font-semibold text-foreground text-sm">Payment Method</h3>
+                      <h3 className="font-semibold text-foreground text-sm flex items-center gap-1.5">
+                        <span
+                          aria-hidden
+                          className="w-4 h-4 inline-block"
+                          style={{
+                            backgroundColor: "#364F9F",
+                            WebkitMaskImage: `url(${iconWalletImg})`,
+                            maskImage: `url(${iconWalletImg})`,
+                            WebkitMaskRepeat: "no-repeat",
+                            maskRepeat: "no-repeat",
+                            WebkitMaskSize: "contain",
+                            maskSize: "contain",
+                            WebkitMaskPosition: "center",
+                            maskPosition: "center",
+                          }}
+                        />
+                        Payment Method
+                      </h3>
                       <div className="space-y-2">
                         {[
-                          { value: "cod", icon: <Banknote className="w-4 h-4 text-muted-foreground" />, label: "Cash on Delivery" },
-                          { value: "online", icon: <CreditCard className="w-4 h-4 text-muted-foreground" />, label: "PhonePe / UPI / Cards / Net Banking" },
+                          { value: "cod", label: "Cash on Delivery" },
+                          { value: "online", label: "UPI" },
                         ].map(opt => (
                           <button
                             key={opt.value}
@@ -1215,7 +1234,6 @@ export function CartDrawer() {
                             <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${paymentMethod === opt.value ? "border-primary" : "border-slate-300"}`}>
                               {paymentMethod === opt.value && <div className="w-2 h-2 rounded-full bg-primary" />}
                             </div>
-                            {opt.icon}
                             <span className="text-sm font-medium text-foreground">{opt.label}</span>
                           </button>
                         ))}
@@ -1245,7 +1263,7 @@ export function CartDrawer() {
                       <Button
                         onClick={placeOrder}
                         disabled={isPending || !customer || savedAddresses.length === 0}
-                        className="h-12 px-8 rounded-xl font-bold bg-primary text-white hover:bg-primary/95 shadow-lg shadow-primary/20 flex items-center gap-2"
+                        className="h-12 px-8 rounded-full font-bold bg-orange-500 text-white hover:bg-orange-600 shadow-lg shadow-orange-500/20 flex items-center gap-2"
                         data-testid="button-place-order"
                       >
                         {isPending ? "Placing..." : <>Proceed <ChevronRight className="w-4 h-4" /></>}
