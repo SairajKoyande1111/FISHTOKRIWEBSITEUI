@@ -16,7 +16,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import profileAnim1 from "@/assets/lottie/profile1.json";
 import profileAnim2 from "@/assets/lottie/profile2.json";
-import logoutAnim from "@/assets/lottie/logout-fish.json";
+import logoutAnim from "@/assets/lottie/logout.json";
+import logoutPopupAnim from "@/assets/lottie/logout-fish.json";
+import searchImg from "@assets/search-interface-symbol_1774706690468.png";
 import emptyAddressAnim from "@/assets/lottie/empty-address.json";
 import iconHomeImg from "@assets/home_1776927604826.png";
 import iconEditImg from "@assets/edit_1776927607777.png";
@@ -1156,147 +1158,43 @@ export default function Profile() {
               ))}
             </div>
 
-            {/* Search + Sort row */}
-            <div className="flex items-center gap-2">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
-                <Input
-                  value={filters.search}
-                  onChange={e => updateFilter("search", e.target.value)}
-                  placeholder="Search by order ID or item name…"
-                  className="pl-9 pr-8 h-10 rounded-xl border-border/60 bg-white text-sm"
-                  data-testid="input-filter-search"
-                />
-                {filters.search && (
-                  <button
-                    onClick={() => updateFilter("search", "")}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                    data-testid="button-clear-search"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
-              <select
-                value={sort}
-                onChange={e => { setSort(e.target.value as OrderSort); setCurrentPage(1); }}
-                className="h-10 text-sm rounded-xl border border-border/60 bg-white px-3 text-foreground focus:outline-none focus:ring-1 focus:ring-primary/40 shrink-0"
-                data-testid="select-sort"
-              >
-                {SORT_OPTIONS.map(opt => (
-                  <option key={opt.value} value={opt.value}>{opt.label}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Status filter pills */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 no-scrollbar">
-              {STATUS_PILLS.map(pill => (
+            {/* Search bar — same style as home screen */}
+            <div className="relative">
+              <img src={searchImg} alt="Search" className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 object-contain z-10" />
+              <input
+                type="search"
+                value={filters.search}
+                onChange={e => updateFilter("search", e.target.value)}
+                placeholder="Search by order ID or item name…"
+                className="w-full pl-10 pr-10 h-10 rounded-full bg-white border border-slate-200 focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/10 text-sm transition-all"
+                data-testid="input-filter-search"
+              />
+              {filters.search && (
                 <button
-                  key={pill.value}
-                  onClick={() => { updateFilter("status", pill.value); }}
-                  className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
-                    filters.status === pill.value
-                      ? "bg-primary text-white border-primary shadow-sm"
-                      : "bg-white text-muted-foreground border-border/60 hover:border-primary/40 hover:text-foreground"
-                  }`}
-                  data-testid={`pill-status-${pill.value || "all"}`}
+                  onClick={() => updateFilter("search", "")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground z-10"
+                  data-testid="button-clear-search"
                 >
-                  {pill.label}
-                </button>
-              ))}
-              {hasActiveFilters && (
-                <button
-                  onClick={clearFilters}
-                  className="shrink-0 ml-1 flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-semibold text-red-500 border border-red-200 bg-red-50 hover:bg-red-100 transition-colors"
-                  data-testid="button-clear-filters"
-                >
-                  <X className="w-3 h-3" /> Clear
+                  <X className="w-4 h-4" />
                 </button>
               )}
             </div>
 
-            {/* Results header: count + view toggle */}
-            <div className="flex items-center justify-between px-0.5">
-              <p className="text-xs text-muted-foreground">
-                {filteredOrders.length === 0 ? "No orders found" : `${filteredOrders.length} order${filteredOrders.length !== 1 ? "s" : ""}${hasActiveFilters ? " (filtered)" : ""}`}
-              </p>
-              <div className="flex items-center gap-1 bg-white rounded-xl border border-border/40 p-0.5 shadow-sm">
-                <button
-                  onClick={() => setViewMode("list")}
-                  className={`p-1.5 rounded-lg transition-colors ${viewMode === "list" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`}
-                  data-testid="button-view-list"
-                >
-                  <List className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  onClick={() => setViewMode("grid")}
-                  className={`p-1.5 rounded-lg transition-colors ${viewMode === "grid" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`}
-                  data-testid="button-view-grid"
-                >
-                  <LayoutGrid className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
-
-            {/* Orders list / grid */}
+            {/* Orders list */}
             {ordersLoading ? (
-              <div className={viewMode === "grid" ? "grid grid-cols-2 sm:grid-cols-3 gap-3" : "space-y-4"}>
-                {[1, 2, 3].map(i => <Skeleton key={i} className={viewMode === "grid" ? "h-44 rounded-2xl" : "h-40 w-full rounded-2xl"} />)}
+              <div className="space-y-4">
+                {[1, 2, 3].map(i => <Skeleton key={i} className="h-40 w-full rounded-2xl" />)}
               </div>
             ) : filteredOrders.length === 0 ? (
               <div className="flex flex-col items-center py-12 gap-3 bg-white rounded-2xl border border-border/50 shadow-sm">
                 <ShoppingBag className="w-10 h-10 text-muted-foreground/40" />
                 <p className="text-sm text-muted-foreground">
-                  {hasActiveFilters ? "No orders match your filters" : ordersSubTab === "current" ? "No active orders" : "No previous orders"}
+                  {filters.search ? "No orders match your search" : ordersSubTab === "current" ? "No active orders" : "No previous orders"}
                 </p>
-                {hasActiveFilters && (
-                  <button onClick={clearFilters} className="text-xs text-primary font-semibold">Clear filters</button>
-                )}
-              </div>
-            ) : viewMode === "list" ? (
-              <div className="space-y-4">
-                {paginatedOrders.map(order => <OrderCard key={order.id} order={order} productImageMap={productImageMap} />)}
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {paginatedOrders.map(order => <OrderGridCard key={order.id} order={order} productImageMap={productImageMap} />)}
-              </div>
-            )}
-
-            {/* Pagination */}
-            {!ordersLoading && filteredOrders.length > ORDERS_PER_PAGE && (
-              <div className="flex items-center justify-between bg-white rounded-2xl border border-border/40 shadow-sm px-4 py-2.5">
-                <button
-                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                  disabled={currentPage === 1}
-                  className="flex items-center gap-1 text-xs font-semibold text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                  data-testid="button-page-prev"
-                >
-                  <ChevronLeft className="w-3.5 h-3.5" /> Prev
-                </button>
-                <div className="flex items-center gap-1">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                    <button
-                      key={page}
-                      onClick={() => setCurrentPage(page)}
-                      className={`w-7 h-7 rounded-lg text-xs font-semibold transition-colors ${
-                        currentPage === page ? "bg-primary text-white" : "text-muted-foreground hover:bg-slate-100"
-                      }`}
-                      data-testid={`button-page-${page}`}
-                    >
-                      {page}
-                    </button>
-                  ))}
-                </div>
-                <button
-                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                  disabled={currentPage === totalPages}
-                  className="flex items-center gap-1 text-xs font-semibold text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                  data-testid="button-page-next"
-                >
-                  Next <ChevronRight className="w-3.5 h-3.5" />
-                </button>
+              <div className="space-y-4">
+                {filteredOrders.map(order => <OrderCard key={order.id} order={order} productImageMap={productImageMap} />)}
               </div>
             )}
           </div>
@@ -1306,8 +1204,8 @@ export default function Profile() {
       {/* Logout confirmation dialog */}
       <AlertDialog open={logoutConfirmOpen} onOpenChange={setLogoutConfirmOpen}>
         <AlertDialogContent className="rounded-3xl max-w-sm">
-          <div className="flex justify-center -mt-2 mb-1">
-            <Lottie animationData={logoutAnim} loop className="w-24 h-24" />
+          <div className="flex justify-center -mt-2 mb-5">
+            <Lottie animationData={logoutPopupAnim} loop className="w-28 h-28" />
           </div>
           <AlertDialogHeader>
             <AlertDialogTitle className="text-center text-lg font-medium" style={{ color: "#364F9F" }}>
