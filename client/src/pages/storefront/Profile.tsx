@@ -86,8 +86,8 @@ const emptyAddress: EmptyAddress = {
   pincode: "", type: "house", label: "Home", instructions: "",
 };
 
-const STATUS_CONFIG: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
-  pending:          { label: "Order Placed",      color: "bg-yellow-100 text-yellow-700 border-yellow-200",  icon: <Clock className="w-3.5 h-3.5" /> },
+const STATUS_CONFIG: Record<string, { label: string; color: string; icon: React.ReactNode; bgColor?: string }> = {
+  pending:          { label: "Order Placed",      color: "text-white border-transparent",                    icon: null, bgColor: "#F05B4E" },
   confirmed:        { label: "Confirmed",          color: "bg-blue-100 text-blue-700 border-blue-200",        icon: <CheckCircle2 className="w-3.5 h-3.5" /> },
   out_for_delivery: { label: "Out for Delivery",   color: "bg-orange-100 text-orange-700 border-orange-200",  icon: <Truck className="w-3.5 h-3.5" /> },
   delivered:        { label: "Delivered",          color: "bg-green-100 text-green-700 border-green-200",     icon: <PackageCheck className="w-3.5 h-3.5" /> },
@@ -258,7 +258,10 @@ function OrderCard({ order, productImageMap }: { order: OrderRequest; productIma
             <p className="text-xs text-muted-foreground">{date}</p>
           </div>
         </div>
-        <div className={`flex items-center gap-1 px-2.5 py-1 rounded-full border text-xs font-semibold shrink-0 ${status.color}`}>
+        <div
+          className={`flex items-center gap-1 px-3 py-1 rounded-full border text-xs font-semibold shrink-0 ${status.color}`}
+          style={status.bgColor ? { backgroundColor: status.bgColor } : undefined}
+        >
           {status.icon}
           {status.label}
         </div>
@@ -413,12 +416,12 @@ function OrderCard({ order, productImageMap }: { order: OrderRequest; productIma
             </div>
 
             {order.notes && (
-              <div className="bg-amber-50 rounded-lg p-2.5">
-                <p className="text-[11px] font-semibold text-amber-700 mb-0.5">Order Notes</p>
-                <p className="text-xs text-amber-600">{order.notes}</p>
+              <div className="rounded-lg p-2.5" style={{ backgroundColor: "#364F9F" }}>
+                <p className="text-[11px] font-semibold text-white mb-0.5">Order Notes</p>
+                <p className="text-xs text-white/90">{order.notes}</p>
               </div>
             )}
-            <p className="text-[11px] text-center text-muted-foreground pt-1">Thank you for shopping with FishTokri! 🐟</p>
+            <p className="text-[11px] text-center text-muted-foreground pt-1">Thank you for shopping with FishTokri!</p>
           </div>
         </div>
       )}
