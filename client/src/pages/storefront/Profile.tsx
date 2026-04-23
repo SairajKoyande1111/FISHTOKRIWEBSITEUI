@@ -792,10 +792,10 @@ export default function Profile() {
                       setDraftProfile({ name: customer.name || "", email: customer.email || "", dateOfBirth: customer.dateOfBirth || "" });
                       setEditingProfile(true);
                     }}
-                    className="rounded-full text-muted-foreground hover:text-[#364F9F]"
+                    className="w-7 h-7 rounded-full hover:bg-slate-100"
                     data-testid="button-edit-profile"
                   >
-                    <Pencil className="w-4 h-4" />
+                    <img src={iconEditImg} alt="Edit" className="w-4 h-4 object-contain" style={{ filter: "brightness(0)" }} />
                   </Button>
                 )}
               </div>
@@ -1065,9 +1065,9 @@ export default function Profile() {
                   <p className="text-sm text-muted-foreground text-center">No saved addresses yet</p>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className="divide-y divide-slate-100">
                   {addresses.map((addr) => (
-                    <div key={addr.id} className="rounded-2xl border border-border/50 bg-slate-50/50 p-4" data-testid={`card-address-${addr.id}`}>
+                    <div key={addr.id} className="py-3 first:pt-0 last:pb-0" data-testid={`card-address-${addr.id}`}>
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex items-start gap-3 min-w-0">
                           {(addr.type === "house" || addr.type === "office") && (
@@ -1075,7 +1075,8 @@ export default function Profile() {
                               <img
                                 src={addr.type === "house" ? iconHomeImg : iconBriefcaseImg}
                                 alt=""
-                                className="w-4 h-4 object-contain opacity-70"
+                                className="w-4 h-4 object-contain"
+                                style={{ filter: "brightness(0)" }}
                               />
                             </div>
                           )}
@@ -1095,7 +1096,7 @@ export default function Profile() {
                         </div>
                         <div className="flex items-center gap-1 shrink-0">
                           <Button variant="ghost" size="icon" className="w-7 h-7 rounded-full hover:bg-slate-100" onClick={() => openEditForm(addr)} data-testid={`button-edit-address-${addr.id}`}>
-                            <img src={iconEditImg} alt="Edit" className="w-4 h-4 object-contain opacity-70" />
+                            <img src={iconEditImg} alt="Edit" className="w-4 h-4 object-contain" style={{ filter: "brightness(0)" }} />
                           </Button>
                           <Button
                             variant="ghost" size="icon"
@@ -1104,7 +1105,7 @@ export default function Profile() {
                             onClick={() => deleteAddressMutation.mutate(addr.id)}
                             data-testid={`button-delete-address-${addr.id}`}
                           >
-                            <img src={iconBinImg} alt="Delete" className="w-4 h-4 object-contain opacity-70" />
+                            <img src={iconBinImg} alt="Delete" className="w-4 h-4 object-contain" style={{ filter: "brightness(0)" }} />
                           </Button>
                         </div>
                       </div>
