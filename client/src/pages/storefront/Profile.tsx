@@ -17,6 +17,7 @@ import {
 import profileAnim1 from "@/assets/lottie/profile1.json";
 import profileAnim2 from "@/assets/lottie/profile2.json";
 import logoutAnim from "@/assets/lottie/logout.json";
+import emptyAddressAnim from "@/assets/lottie/empty-address.json";
 import iconHomeImg from "@assets/home_1776927604826.png";
 import iconEditImg from "@assets/edit_1776927607777.png";
 import iconBinImg from "@assets/bin_1776927610776.png";
@@ -723,24 +724,26 @@ export default function Profile() {
     <div className="min-h-screen bg-slate-50 font-sans">
       <Header />
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
-        {/* Back + Centered Title with Lottie animations */}
-        <div className="relative flex items-center justify-center gap-3 mb-6">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate("/")}
-            className="absolute left-0 rounded-full border border-border/50 bg-white"
-            data-testid="button-profile-back"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </Button>
-          <div className="flex items-center gap-2 sm:gap-4">
+        {/* Back + Title (left) with Lottie animations (right) */}
+        <div className="flex items-center justify-between gap-3 mb-6">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate("/")}
+              className="rounded-full border border-border/50 bg-white shrink-0"
+              data-testid="button-profile-back"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </Button>
+            <h1 className="text-xl sm:text-2xl font-medium text-foreground tracking-tight truncate">My Profile</h1>
+          </div>
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             <Lottie
               animationData={profileAnim1}
               loop
               className="w-12 h-12 sm:w-14 sm:h-14 shrink-0"
             />
-            <h1 className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">My Profile</h1>
             <Lottie
               animationData={profileAnim2}
               loop
@@ -1053,10 +1056,12 @@ export default function Profile() {
               )}
 
               {addresses.length === 0 && !showAddressForm ? (
-                <div className="flex flex-col items-center py-8 gap-3">
-                  <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center">
-                    <Navigation className="w-5 h-5 text-muted-foreground" />
-                  </div>
+                <div className="flex flex-col items-center py-6 gap-2">
+                  <Lottie
+                    animationData={emptyAddressAnim}
+                    loop
+                    className="w-28 h-28"
+                  />
                   <p className="text-sm text-muted-foreground text-center">No saved addresses yet</p>
                 </div>
               ) : (
