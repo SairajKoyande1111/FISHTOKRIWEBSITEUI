@@ -321,36 +321,34 @@ export function LocationPicker() {
             <FishTokriLogo className="h-10 w-auto brightness-0 invert" />
           </div>
 
-          {/* Title + subtitle */}
-          <div className="text-center mb-3">
-            <h2 className="text-lg font-semibold text-white leading-tight">
-              {step === "sub" ? `Areas in ${pickedSuper?.name}` : "Select your location"}
-            </h2>
-            <p className="text-white/70 text-sm mt-0.5 font-normal">
-              {step === "sub" ? "Pick your delivery area below" : "Search your area or detect automatically"}
-            </p>
-          </div>
-
-          {/* Current location pill — orange bg, white text/icon */}
-          {(selectedSubHub || selectedSuperHub) && (
-            <div className="flex justify-center">
-              <div className="flex items-center gap-1.5 rounded-full px-3 py-1.5 w-fit" style={{ backgroundColor: BRAND_ORANGE }}>
-                <MapPin className="w-3.5 h-3.5 text-white" />
-                <span className="text-xs font-medium text-white">
+          {/* Title left, pill right */}
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <h2 className="text-lg font-semibold text-white leading-tight">
+                {step === "sub" ? `Areas in ${pickedSuper?.name}` : "Select your location"}
+              </h2>
+              <p className="text-white/70 text-sm mt-0.5 font-normal">
+                {step === "sub" ? "Pick your delivery area below" : "Search your area or detect automatically"}
+              </p>
+            </div>
+            {/* Current location pill — orange bg, no icon, white text, right side */}
+            {(selectedSubHub || selectedSuperHub) && (
+              <div className="shrink-0 rounded-full px-3.5 py-1.5" style={{ backgroundColor: BRAND_ORANGE }}>
+                <span className="text-sm font-semibold text-white">
                   {selectedSubHub ? selectedSubHub.name : selectedSuperHub?.name}
                 </span>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
-        {/* Search Box — pill format, white bg */}
+        {/* Search Box — pill format, darker style matching home screen */}
         <div className="px-5 pt-4 pb-2 shrink-0 relative" ref={dropdownRef}>
           <div className="relative">
             {isSearching ? (
-              <Loader2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 animate-spin pointer-events-none" />
+              <Loader2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 animate-spin pointer-events-none" />
             ) : (
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
             )}
             <input
               ref={searchInputRef}
@@ -360,9 +358,9 @@ export function LocationPicker() {
               onFocus={() => { setSearchFocused(true); searchQuery.trim().length >= 2 && setShowDropdown(true); }}
               onBlur={() => setSearchFocused(false)}
               placeholder={searchFocused ? "" : typewriterPlaceholder}
-              className="w-full h-12 pl-10 pr-10 rounded-full border-2 bg-white text-sm font-normal text-slate-800 placeholder:text-slate-400 outline-none transition-all duration-200"
+              className="w-full h-12 pl-10 pr-10 rounded-full border-2 bg-white text-sm font-normal text-slate-700 placeholder:text-slate-500 outline-none transition-all duration-200"
               style={{
-                borderColor: searchFocused ? BRAND_BLUE : "#e2e8f0",
+                borderColor: searchFocused ? BRAND_BLUE : "#94a3b8",
                 boxShadow: searchFocused ? `0 0 0 3px ${BRAND_BLUE}18` : "none",
               }}
               data-testid="input-location-search"
@@ -434,46 +432,50 @@ export function LocationPicker() {
 
         {/* Search feedback banners */}
         {searchStatus === "serviceable" && (
-          <div className="mx-5 mb-2 shrink-0 flex items-center gap-2 p-3 rounded-xl bg-green-50 border border-green-200 text-green-700 text-sm font-normal">
+          <div className="mx-5 mb-2 shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-full bg-green-500 text-white text-sm font-normal">
             <CheckCircle2 className="w-4 h-4 shrink-0" />
             <span>{searchMessage}</span>
           </div>
         )}
         {searchStatus === "unserviceable" && (
-          <div className="mx-5 mb-2 shrink-0 flex items-center gap-2 p-3 rounded-xl bg-orange-50 border border-orange-200 text-orange-700 text-sm font-normal">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+          <div className="mx-5 mb-2 shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-full text-white text-sm font-normal" style={{ backgroundColor: BRAND_ORANGE }}>
+            <AlertCircle className="w-4 h-4 shrink-0 text-white" />
             <span>{searchMessage}</span>
           </div>
         )}
 
-        {/* Use current location — persistent button, white bg */}
+        {/* Use current location — no card, no bg circle, bigger icon + text */}
         <div className="px-5 pb-2 shrink-0">
           <button
             onClick={handleDetectLocation}
             disabled={geoStatus === "detecting" || geoStatus === "serviceable"}
             data-testid="button-detect-location"
-            className="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 transition-all disabled:opacity-60 disabled:cursor-not-allowed shadow-sm"
+            className="w-full flex items-center gap-4 px-4 py-3 hover:bg-slate-50 rounded-2xl transition-all disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            <div className="w-10 h-10 rounded-full bg-white border border-slate-100 flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
-              {geoStatus === "detecting" ? (
-                <Loader2 className="w-5 h-5 animate-spin" style={{ color: BRAND_BLUE }} />
-              ) : (
-                <img src={googleMapsIcon} alt="Maps" className="w-8 h-8 object-contain" />
-              )}
-            </div>
+            {geoStatus === "detecting" ? (
+              <Loader2 className="w-8 h-8 animate-spin shrink-0" style={{ color: BRAND_BLUE }} />
+            ) : (
+              <img src={googleMapsIcon} alt="Maps" className="w-8 h-8 object-contain shrink-0" />
+            )}
             <div className="text-left">
-              <p className="text-sm font-medium text-slate-800 leading-tight">
+              <p className="text-base font-semibold text-slate-800 leading-tight">
                 {geoStatus === "detecting" ? "Detecting location..." : "Use current location"}
               </p>
-              <p className="text-xs text-slate-400 font-normal">Auto-detect & check serviceability</p>
+              <p className="text-sm text-slate-500 font-normal mt-0.5">Auto-detect & check serviceability</p>
             </div>
           </button>
         </div>
 
         {/* Geo Status Banner */}
-        {geoCfg && (
+        {geoCfg && geoStatus !== "unserviceable" && geoStatus !== "denied" && geoStatus !== "error" && (
           <div className={`mx-5 mb-2 shrink-0 flex items-center gap-2 p-3 rounded-xl border text-sm font-normal ${geoCfg.bg} ${geoCfg.text}`}>
             {geoCfg.icon}
+            <span>{geoMessage}</span>
+          </div>
+        )}
+        {geoCfg && (geoStatus === "unserviceable" || geoStatus === "denied" || geoStatus === "error") && (
+          <div className="mx-5 mb-2 shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-full text-white text-sm font-normal" style={{ backgroundColor: BRAND_ORANGE }}>
+            <AlertCircle className="w-4 h-4 shrink-0 text-white" />
             <span>{geoMessage}</span>
           </div>
         )}
@@ -517,8 +519,8 @@ export function LocationPicker() {
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-slate-800 text-base">{hub.name}</p>
-                        {hub.location && <p className="text-sm text-slate-400 font-normal truncate mt-0.5">{hub.location}</p>}
+                        <p className="font-semibold text-slate-800 text-lg">{hub.name}</p>
+                        {hub.location && <p className="text-base text-slate-500 font-normal truncate mt-0.5">{hub.location}</p>}
                       </div>
                       {isSelected && (
                         <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: BRAND_BLUE }}>
@@ -560,13 +562,8 @@ export function LocationPicker() {
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-slate-800">{sub.name}</p>
-                        {sub.location && <p className="text-sm text-slate-400 font-normal truncate mt-0.5">{sub.location}</p>}
-                        {sub.pincodes?.length > 0 && (
-                          <p className="text-xs font-medium mt-0.5" style={{ color: `${BRAND_BLUE}99` }}>
-                            Pincodes: {sub.pincodes.slice(0, 4).join(", ")}{sub.pincodes.length > 4 ? "..." : ""}
-                          </p>
-                        )}
+                        <p className="font-semibold text-slate-800 text-lg">{sub.name}</p>
+                        {sub.location && <p className="text-base text-slate-500 font-normal truncate mt-0.5">{sub.location}</p>}
                       </div>
                       {isSelected && (
                         <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: BRAND_BLUE }}>
