@@ -89,8 +89,8 @@ export function CategoryMenuDropdown({ open, onClose }: Props) {
       <div className="bg-white flex overflow-hidden h-full sm:rounded-2xl" style={{ maxHeight: "75vh" }}>
         {/* Left panel — categories from DB */}
         <div
-          className="w-[52%] min-w-[160px] sm:w-56 flex-shrink-0 bg-slate-50 border-r border-slate-100 overflow-y-auto"
-          style={{ maxHeight: "75vh" }}
+          className="w-[52%] min-w-[160px] sm:w-56 flex-shrink-0 bg-slate-50 border-r border-slate-100 overflow-y-auto [&::-webkit-scrollbar]:hidden"
+          style={{ maxHeight: "75vh", scrollbarWidth: "none" }}
         >
           {/* Virtual "All" entry */}
           <button
@@ -139,8 +139,8 @@ export function CategoryMenuDropdown({ open, onClose }: Props) {
 
         {/* Right panel — actual products from DB */}
         <div
-          className="flex-1 bg-white sm:bg-slate-50/50 p-4 sm:px-6 sm:py-4 overflow-y-auto"
-          style={{ maxHeight: "75vh" }}
+          className="flex-1 bg-white sm:bg-slate-50/50 p-4 sm:px-6 sm:py-4 overflow-y-auto [&::-webkit-scrollbar]:hidden"
+          style={{ maxHeight: "75vh", scrollbarWidth: "none" }}
         >
           {activeProducts.length === 0 ? (
             <p className="text-sm text-muted-foreground py-4">No products available.</p>

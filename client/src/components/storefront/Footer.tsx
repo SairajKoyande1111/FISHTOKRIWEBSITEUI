@@ -32,15 +32,15 @@ export function Footer() {
               </a>
               <a href="https://www.facebook.com/fishtokri/" target="_blank" rel="noreferrer" aria-label="Facebook"
                 className="w-10 h-10 flex-shrink-0 rounded-xl overflow-hidden transition-all duration-200 hover:scale-110 hover:opacity-90">
-                <img src={fbIcon} alt="Facebook" className="w-10 h-10 object-cover" />
-              </a>
-              <a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube"
-                className="w-10 h-10 flex-shrink-0 rounded-xl overflow-hidden transition-all duration-200 hover:scale-110 hover:opacity-90">
-                <img src={ytIcon} alt="YouTube" className="w-10 h-10 object-cover" />
+                <img src={fbIcon} alt="Facebook" className="w-10 h-10 object-contain" />
               </a>
               <a href="https://wa.me/9220200100" target="_blank" rel="noreferrer" aria-label="WhatsApp"
                 className="w-10 h-10 flex-shrink-0 rounded-xl overflow-hidden transition-all duration-200 hover:scale-110 hover:opacity-90">
                 <img src={waIcon} alt="WhatsApp" className="w-10 h-10 object-cover" />
+              </a>
+              <a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube"
+                className="w-10 h-10 flex-shrink-0 rounded-xl overflow-hidden transition-all duration-200 hover:scale-110 hover:opacity-90">
+                <img src={ytIcon} alt="YouTube" className="w-10 h-10 object-cover" />
               </a>
             </div>
           </div>
@@ -96,11 +96,11 @@ export function Footer() {
             <h4 className="font-semibold text-white text-sm uppercase tracking-widest mb-4">
               Contact Us
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-3 mb-4">
               <li className="flex items-start gap-2.5">
                 <img src={pinIcon} alt="" aria-hidden className="w-4 h-4 shrink-0 mt-0.5" style={whiteFilter} />
                 <span className="text-white text-sm leading-snug">
-                  Mumbai, Maharashtra, India
+                  Shop No.2, Shiva Nand Society, Near, Jambli Naka, Khartan Road, Juhu Chandan Society, Thane West, Thane-400601, Maharashtra
                 </span>
               </li>
               <li className="flex items-center gap-2.5">
@@ -121,7 +121,25 @@ export function Footer() {
                   Mon – Sun: 6:00 AM – 9:00 PM
                 </span>
               </li>
+              <li className="flex items-center gap-2.5">
+                <span className="text-white/70 text-xs font-medium">GSTIN:</span>
+                <span className="text-white text-sm font-medium tracking-wide">27AAOCA7628P1ZT</span>
+              </li>
             </ul>
+
+            {/* Google Maps embed */}
+            <div className="rounded-xl overflow-hidden border border-white/20 w-full" style={{ height: "160px" }}>
+              <iframe
+                title="FishTokri Location"
+                src="https://maps.google.com/maps?q=Shiva+Nand+Society+Jambli+Naka+Khartan+Road+Thane+West+Thane+400601+Maharashtra&output=embed"
+                width="100%"
+                height="160"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
           </div>
 
         </div>
@@ -137,7 +155,8 @@ export function Footer() {
               href="https://www.airavatatechnologies.com/"
               target="_blank"
               rel="noreferrer"
-              className="text-white underline underline-offset-2 hover:opacity-75 transition-opacity font-medium"
+              className="text-white hover:opacity-75 transition-opacity font-medium no-underline"
+              style={{ textDecoration: "none" }}
             >
               AIRAVATA TECHNOLOGIES
             </a>

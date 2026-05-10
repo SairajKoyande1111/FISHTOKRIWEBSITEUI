@@ -183,7 +183,7 @@ export function Header({
             >
               {isListening
                 ? <MicOff className="w-4 h-4 text-red-500" />
-                : <img src={micImg} alt="Voice search" className="w-4 h-4 object-contain opacity-50 hover:opacity-80" />
+                : <img src={micImg} alt="Voice search" className="w-4 h-4 object-contain" style={{ filter: "brightness(0)" }} />
               }
             </button>
           </form>
@@ -246,7 +246,7 @@ export function Header({
           {/* Location */}
           <button
             onClick={openPicker}
-            className="flex items-center gap-1.5 pl-2 border-l border-border/50 ml-0.5 hover:opacity-70 transition-opacity"
+            className="flex items-center gap-1.5 pl-2 border-l border-slate-400 ml-0.5 hover:opacity-70 transition-opacity"
             data-testid="button-location-picker"
           >
             <img src={locationImg} alt="Location" className="w-5 h-5 sm:w-5 sm:h-5 object-contain flex-shrink-0" />
@@ -292,7 +292,7 @@ export function Header({
             >
               {isListening
                 ? <MicOff className="w-4 h-4 text-red-500" />
-                : <img src={micImg} alt="Voice search" className="w-4 h-4 object-contain opacity-50 hover:opacity-80" />
+                : <img src={micImg} alt="Voice search" className="w-4 h-4 object-contain" style={{ filter: "brightness(0)" }} />
               }
             </button>
           </form>
